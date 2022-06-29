@@ -1,28 +1,34 @@
 <template>
   <!-- 모달창 -->
-  <div class="black-bg" v-if="모달창열렸니 == true">
-    <div class="white-bg">
-      <img :src="원룸들[누른거].image" class="room-img" />
-      <h4>{{ 원룸들[누른거].title }}</h4>
-      <p>{{ 원룸들[누른거].content }}</p>
-      <button v-on:click="모달창열렸니 = false">닫기</button>
-    </div>
-  </div>
+  <Modal v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니" />
+  <!-- :원룸들="원룸들"로 써도 됨. -->
+  
   <!-- 메뉴 -->
   <div class="menu">
     <a v-for="(작명, i) in 메뉴들" :key="i">{{ 작명 }}</a>
   </div>
+  
+  <!-- 홍보배너 -->
+  <Discount />
+  
   <!-- 콘텐츠 -->
+  <!-- <Card :원룸="원룸들[0]" v-for="작명 in 반복할횟수/데이터" :key="" /> -->
+  <Card :원룸="원룸들[i]" v-for="(작명, i) in 원룸들" :key="작명" />
+
+  <!-- <Card :원룸="원룸들[0]" />
+  <Card :원룸="원룸들[1]" />
+  <Card :원룸="원룸들[2]" /> -->
+  
   <!-- <div v-for="(a, i) in products" :key="i">
     <h4>products[i]</h4>
     <p>50 만원</p>
   </div> -->
-  <div v-for="(원룸, i) in 원룸들" :key="i">
+  <!-- <div v-for="(원룸, i) in 원룸들" :key="i">
     <img :src="원룸.image" class="room-img" alt="room0.jpg">
     <h4 @click="모달창열렸니 = true, 누른거 = i">{{ 원룸.title }}</h4>
     <p>{{ 원룸.price }}원</p>
-    <!-- <button @click="신고수[i]++">허위매물신고버튼</button> <span>신고수 : {{ 신고수[i] }}</span> -->
-  </div>
+    <button @click="신고수[i]++">허위매물신고버튼</button> <span>신고수 : {{ 신고수[i] }}</span>
+  </div> -->
 </template>
 
 <!-- 
@@ -34,6 +40,9 @@
 
 <script>
 import data from './assets/oneroom.js'
+import Discount from './components/DiscountComponent.vue'
+import Modal from './components/ModalComponent.vue'
+import Card from './components/CardComponent.vue'
 
 export default {
   name: 'App',
@@ -56,6 +65,9 @@ export default {
     }
   },
   components: {
+    Discount, // 작명 : 등록할컴포넌트 -> 이렇게 써도 됨
+    Modal,
+    Card,
   }
 }
 </script>
@@ -75,18 +87,7 @@ body {
 div {
   box-sizing: border-box;
 }
-.black-bg {
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  padding: 20px;
-}
-.white-bg {
-  width: 100%;
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-}
+
 
 .menu {
   background: darkslateblue;
@@ -98,11 +99,6 @@ div {
   color: #fff;
   padding: 10px;
   text-decoration: none;
-}
-
-.room-img {
-  width: 100%;
-  margin-top: 40px;
 }
 
 .modal-close-btn {
