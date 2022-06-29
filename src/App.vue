@@ -1,21 +1,24 @@
 <template>
   <!-- 모달창 -->
-  <div class="start" :class="{ end: 모달창열렸니 }">
-    <Modal v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니" />
-    <!-- :원룸들="원룸들"로 써도 됨. -->
-  </div>
-  
+  <transition>
+    <Modal @closeModal="모달창열렸니 = false" 
+      v-bind:원룸들="원룸들" 
+      :누른거="누른거" 
+      :모달창열렸니="모달창열렸니" /> <!-- :원룸들="원룸들"로 써도 됨. -->
+  </transition>
   <!-- 메뉴 -->
   <div class="menu">
     <a v-for="(작명, i) in 메뉴들" :key="i">{{ 작명 }}</a>
   </div>
-  
   <!-- 홍보배너 -->
   <Discount />
-  
   <!-- 콘텐츠 -->
   <!-- <Card :원룸="원룸들[0]" v-for="작명 in 반복할횟수/데이터" :key="" /> -->
-  <Card :원룸="원룸들[i]" v-for="(작명, i) in 원룸들" :key="작명" />
+  <Card @openModal="모달창열렸니 = true; 누른거 = $event" :원룸="원룸들[i]" v-for="(작명, i) in 원룸들" :key="작명" />
+  <!-- 
+    App.vue <Card />에 이렇게 해도 됨 : 이벤트 버블링 현상 때문에
+    <Card @click="모달창열렸니 = true" :원룸="원룸들[i]" v-for="(작명, i) in 원룸들" :key="작명" />
+   -->
 
   <!-- <Card :원룸="원룸들[0]" />
   <Card :원룸="원룸들[1]" />
@@ -54,7 +57,7 @@ export default {
       // 여기에 데이터 보관하자.
       누른거: 0,
       원룸들: data,
-      모달창열렸니: true, // true or false, 0 or 1
+      모달창열렸니: false, // true or false, 0 or 1
       신고수: [0, 0, 0],
       메뉴들: ['Home', 'Shop', 'About'],
       products: ['역삼동원룸', '천호동원룸', '망원동원룸'],
@@ -82,13 +85,13 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 body {
   margin: 0;
 }
 div {
   box-sizing: border-box;
 }
-
 .menu {
   background: darkslateblue;
   padding: 15px;
