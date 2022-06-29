@@ -11,13 +11,13 @@
     <a v-for="(작명, i) in 메뉴들" :key="i">{{ 작명 }}</a>
   </div>
   <!-- 홍보배너 -->
-  <Discount />
+  <Discount v-if="showDiscount == true" />
   <!-- 정렬버튼 -->
-  <button @click="spellingSort()">가나다순정렬</button>
-  <button @click="priceSort()">가격순정렬</button>
-  <button @click="priceReverseSort()">가격역순정렬</button>
-  <button @click="PriceSearchSort()">50만원이하</button>
-  <button @click="sortBack()">되돌리기</button>
+  <button class="sortBtn" @click="spellingSort()">가나다순정렬</button>
+  <button class="sortBtn" @click="priceSort()">가격순정렬</button>
+  <button class="sortBtn" @click="priceReverseSort()">가격역순정렬</button>
+  <button class="sortBtn" @click="PriceSearchSort()">50만원이하</button>
+  <button class="sortBtn" @click="sortBack()">되돌리기</button>
   <!-- 콘텐츠 -->
   <!-- <Card :원룸="원룸들[0]" v-for="작명 in 반복할횟수/데이터" :key="" /> -->
   <Card @openModal="모달창열렸니 = true; 누른거 = $event" :원룸="원룸들[i]" v-for="(작명, i) in 원룸들" :key="작명" />
@@ -61,6 +61,7 @@ export default {
   data () {
     return {
       // 여기에 데이터 보관하자.
+      showDiscount: true, // 현재 디스카운트의 상태
       원룸들오리지널: [...data], // 원래 데이터 필요할 때 사용
       // 별개의 사본을 만들려면 [...자료형]
       누른거: 0,
@@ -109,6 +110,22 @@ export default {
       // this.원룸들 = this.원룸들오리지널
       this.원룸들 = [...this.원룸들오리지널]
     }
+  },
+  created() {
+    // 서버에서 데이터 가져오는 코드
+  },
+  mounted() { // 마운트되고 나서
+    // setTimeout(() => {
+    //   this.showDiscount = false
+    // }, 2000)
+    setInterval(() => {
+      if (this.$refs.discount.amount > 0) {
+        this.$refs.discount.amount--
+      } else if (this.$refs.discount.amount <= 0) { // 할인율이 0이되면 감소를 멈춤
+        clearInterval
+        this.showDiscount = false // 할인율이 0이되면 사라짐
+      }
+    }, 1000);
   },
   components: {
     Discount, // 작명 : 등록할컴포넌트 -> 이렇게 써도 됨
@@ -178,5 +195,16 @@ div {
 .fade-leave-to {
   /* 끝날 때 스타일 */
   opacity: 0;
+}
+
+.sortBtn {
+  border-radius: 3px;
+  margin: 3px;
+  padding: 10px;
+  border: 0;
+  background: lightcoral;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
 }
 </style>
