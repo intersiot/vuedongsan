@@ -1,6 +1,6 @@
 <template>
   <!-- 모달창 -->
-  <transition>
+  <transition name="fade">
     <Modal @closeModal="모달창열렸니 = false" 
       v-bind:원룸들="원룸들" 
       :누른거="누른거" 
@@ -102,12 +102,40 @@ div {
   padding: 10px;
   text-decoration: none;
 }
-
+/* 
 .start {
   opacity: 0;
   transition: all 1;
 }
 .end {
   opacity: 1;
+} */
+
+/* 등장애니메이션 */
+.fade-enter-from {
+  /* 시작스타일 */
+  opacity: 0;
+}
+.fade-enter-active {
+  /* 트랜지션 */
+  transition: all 1s;
+}
+.fade-enter-to {
+  /* 끝날 때 스타일 */
+  opacity: 1;
+}
+
+/* 퇴장애니메이션 */
+.fade-leave-from {
+  /* 시작스타일 */
+  opacity: 1;
+}
+.fade-leave-active {
+  /* 트랜지션 */
+  transition: all 1s;
+}
+.fade-leave-to {
+  /* 끝날 때 스타일 */
+  opacity: 0;
 }
 </style>
