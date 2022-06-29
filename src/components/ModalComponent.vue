@@ -43,6 +43,12 @@ export default {
       this.$emit('closeModal')
     }
   },
+  beforeUpdate() { // 업데이트 되기 전에
+    if (this.month == 2) { // month라는 데이터를 검사 -> 데이터가 2면
+      alert('2개월은 너무 적음') // 원하는 동작을 실행
+      this.month = 3
+    }
+  },
 }
 </script>
 
