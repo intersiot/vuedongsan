@@ -1,7 +1,9 @@
 <template>
   <!-- 모달창 -->
-  <Modal v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니" />
-  <!-- :원룸들="원룸들"로 써도 됨. -->
+  <div class="start" :class="{ end: 모달창열렸니 }">
+    <Modal v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니" />
+    <!-- :원룸들="원룸들"로 써도 됨. -->
+  </div>
   
   <!-- 메뉴 -->
   <div class="menu">
@@ -80,7 +82,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 body {
   margin: 0;
 }
@@ -88,25 +89,22 @@ div {
   box-sizing: border-box;
 }
 
-
 .menu {
   background: darkslateblue;
   padding: 15px;
   border-radius: 5px;
 }
-
 .menu a {
   color: #fff;
   padding: 10px;
   text-decoration: none;
 }
 
-.modal-close-btn {
-  background: darkcyan;
-  color: #fff;
-  border: 0;
-  border-radius: 5px;
-  padding: 5px 20px;
-  cursor: pointer;
+.start {
+  opacity: 0;
+  transition: all 1;
+}
+.end {
+  opacity: 1;
 }
 </style>
